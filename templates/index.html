@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% block content %}
+  <header>
+    <h1>Presentation Creator for Orthodontic Patients</h1>
+  </header>
+
+  <div class="content">
+
+    <p>This application creates professional presentations for orthodontic patients at Sana'a University's Master program in Orthodontics</p>
+
+    <div class="instructions">
+      <h3>How it works:</h3>
+      <ol>
+        <li>Enter doctor information</li>
+        <li>Upload patient images by category</li>
+        <li>Process images to create presentation</li>
+        <li>Download the final PowerPoint file</li>
+      </ol>
+    </div>
+
+    <form action="/doctor_info" method="post">
+      <p>Click "Start" to create your patient's presentation</p>
+      <button type="submit">Start Now</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>Orthodontic Presentation Creator © 2023 | Sana'a University Master Program</p>
+  </footer>
+{% endblock %}

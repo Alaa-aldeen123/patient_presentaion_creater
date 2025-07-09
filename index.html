@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dental Image Processor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold mb-3">Dental Image Processor</h1>
+            <p class="lead">Upload dental images, generate a customized PowerPoint, and download all results as a ZIP file. All processing is in-memory and secure.</p>
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ 'danger' if category == 'danger' else 'info' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endwith %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
+                <div class="mb-3">
+                    <label for="patient_name" class="form-label">Patient Name:</label>
+                    <input type="text" id="patient_name" name="patient_name" class="form-control" required placeholder="Enter patient name">
+                </div>
+                <hr>
+                <div class="accordion" id="categoriesAccordion">
+                    {% for cat, keys in categories.items() %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-{{ loop.index }}">
+                                <button class="accordion-button {{ 'collapsed' if not loop.first }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ loop.index }}" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="collapse-{{ loop.index }}">
+                                    {{ cat }}
+                                </button>
+                            </h2>
+                            <div id="collapse-{{ loop.index }}" class="accordion-collapse collapse {{ 'show' if loop.first else '' }}" aria-labelledby="heading-{{ loop.index }}" data-bs-parent="#categoriesAccordion">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        {% for key in keys %}
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{key}}" class="form-label">{{key.replace('_', ' ').replace('-', ' ')|capitalize}}</label>
+                                                <input class="form-control" type="file" name="{{key}}" id="{{key}}" accept="image/*">
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Process Images & Download ZIP</button>
+                </div>
+            </form>
+            <div class="card mt-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Instructions</h5>
+                    <ol>
+                        <li>Enter the patient's name.</li>
+                        <li>Upload the relevant images for each category. You can skip categories you don't need.</li>
+                        <li>Click <b>Process Images & Download ZIP</b> to start processing.</li>
+                        <li>Download your ZIP file containing all results!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
